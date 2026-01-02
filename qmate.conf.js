@@ -9,9 +9,12 @@ exports.config = {
   logLevel: 'warn',
   
   specs: [
+    // [
+    //   "./specs/createNewOrder.spec.js"
+    // ],
     [
-      "./specs/createNewOrder.spec.js"
-    ]
+    './features/**/*.feature'
+   ],
   ],
 
   reporters: [
@@ -21,10 +24,11 @@ exports.config = {
         }]
     ],
 
-  framework: 'mocha',
-  mochaOpts: {
+  framework: 'cucumber',
+  cucumberOpts: {
     timeout: 15000,
-    bail: true
+    require: ['./features/step_definitions/*.js'],
+    ignoreUndefinedDefinitions: false
   },
 
   services: [[QmateService], ['chromedriver']],
