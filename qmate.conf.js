@@ -14,6 +14,13 @@ exports.config = {
     ]
   ],
 
+  reporters: [
+        ['allure', {
+            outputDir: 'allure-results',
+            disableWebdriverStepsReporting: true,
+        }]
+    ],
+
   framework: 'mocha',
   mochaOpts: {
     timeout: 15000,
