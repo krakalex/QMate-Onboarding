@@ -4,14 +4,14 @@ describe('Place a new order', () => {
     let initialStock;
 
     it('Step 01: Open the Demokit app', async () => {
-        await manageProductsPage.openApplication();
+        await manageProductsPage.openPage();
         await manageProductsPage.waitForPageOpened();
         await browser.takeScreenshot();
     });
 
     it('Step 02: Place an Order', async () => {
-        await manageProductsPage.selectProduct1();
-        initialStock = await manageProductsPage.getProduct1Stock();
+        await manageProductsPage.selectInitialProduct();
+        initialStock = await manageProductsPage.getInitialProductStock();
         await browser.takeScreenshot();
         await manageProductsPage.orderSelectedProducts();
         // await manageProductsPage.waitForOrderConfirmation();

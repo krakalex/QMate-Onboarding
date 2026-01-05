@@ -2,7 +2,7 @@ const BasePage = require('./base.page');
 
 class ManageProductsPage extends BasePage {
 
-    product1ComboBoxSelector = {
+    initialProductComboBoxSelector = {
         "elementProperties": {
             "viewName": "mycompany.myapp.MyWorklistApp.view.Worklist",
             "metadata": "sap.m.CheckBox",
@@ -10,22 +10,7 @@ class ManageProductsPage extends BasePage {
       }
     };
 
-    async waitForPageOpened() {
-        await browser.waitUntil(
-            async () => {
-                return (await ui5.element.isVisible(this.product1ComboBoxSelector));
-            },{
-                timeout: 10000,
-                timeoutMsg: 'Manage Products page did not open entirely within the expected time'
-            }
-        )
-    };
-
-    async selectProduct1() {
-        await ui5.userInteraction.click(this.product1ComboBoxSelector);
-    };
-
-    product1Stock = {
+    initialProductStock = {
         "elementProperties": {
             "viewName": "mycompany.myapp.MyWorklistApp.view.Worklist",
             "metadata": "sap.m.ObjectNumber",
@@ -35,17 +20,34 @@ class ManageProductsPage extends BasePage {
         }
     };
 
-    async getProduct1Stock() {
-        const value = await ui5.control.getProperty(this.product1Stock, "number");
-        return Number(value);
-    };
-
     orderButtonSelector = {
         "elementProperties": {
             "viewName": "mycompany.myapp.MyWorklistApp.view.Worklist",
             "metadata": "sap.m.Button",
             "type": "Accept"
         }
+    };
+
+    async openPage() {
+        await super.openPage("https://sdk.openui5.org/test-resources/sap/m/demokit/tutorial/worklist/07/webapp/test/mockServer.html?sap-ui-theme=sap_horizon");
+    }
+
+    async waitForPageOpened() {
+        await util.browser.waitUntil(
+            async () => await ui5.element.isVisible(this.initialProductComboBoxSelector), { 
+                timeout: 10000, 
+                timeoutMsg: "Manage Products page did not open entirely within the expected time" 
+            }
+        );
+    };
+
+    async selectInitialProduct() {
+        await ui5.userInteraction.click(this.initialProductComboBoxSelector);
+    };
+
+    async getInitialProductStock() {
+        const value = await ui5.control.getProperty(this.initialProductStock, "number");
+        return Number(value);
     };
 
     async orderSelectedProducts() {
@@ -58,14 +60,11 @@ class ManageProductsPage extends BasePage {
 
     async waitForOrderConfirmation() {
         await nonUi5.element.waitToBeVisible(this.confirmationPopUpSelector, 5000);
-        await nonUi5.element.waitForAll(this.confirmationPopUpSelector, 5000);
     };
 
     async verifyStockChanges(initialStock, expectedChange = 10) {
-        const updatedStock  = await this.getProduct1Stock();
-        if (initialStock !== updatedStock - expectedChange) {
-            throw new Error(`Stock verification failed: expected ${updatedStock} but got ${initialStock} `);
-        }
+        const expectedValue = (initialStock + expectedChange).toFixed(2);
+        await ui5.assertion.expectAttributeToBe(this.initialProductStock, "number", expectedValue);
     }
 }
 

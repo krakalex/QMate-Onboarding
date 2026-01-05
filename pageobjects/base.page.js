@@ -1,7 +1,7 @@
 class BasePage {
 
-    async openApplication() {
-        await ui5.navigation.navigateToApplication("");
+    async openPage(path = "") {
+        await common.navigation.navigateToUrl(path);
     }
 } 
 

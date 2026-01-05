@@ -1,6 +1,6 @@
-import QmateService from "@sap_oss/wdio-qmate-service";
+const QmateService = require("@sap_oss/wdio-qmate-service");
 
-export const config = {
+exports.config = {
     //
     // ====================
     // Runner Configuration
@@ -23,7 +23,8 @@ export const config = {
     // of the config file unless it's absolute.
     //
     specs: [
-       './test/specs/**/*.js'
+       './features/**/*.feature',
+    //    './specs/createNewOrder.spec.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -45,14 +46,32 @@ export const config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'chrome',
+        acceptInsecureCerts: true,
+        'goog:chromeOptions': {
+            args: [
+                "--output-/dev/null",
+                "--log-level-3",
+                "--no-sandbox",
+                "--disable-search-engine-choice-screen",
+                "--ignore-certificate-errors",
+                "--window-size-1920,1200",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--disable-web-security",
+                "--disable-infobars",
+                "--disable-extensions",
+                "--disable-logging",
+                "--lang=en-US"
+            ]
+        }
     }],
 
     //
@@ -110,7 +129,7 @@ export const config = {
     //
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
-    framework: 'mocha',
+    framework: 'cucumber',
     
     //
     // The number of times to retry the entire specfile when it fails as a whole
@@ -125,13 +144,23 @@ export const config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec',['allure', {outputDir: 'allure-results'}]],
+    reporters: ['spec',['allure', {
+        outputDir: 'allure-results',
+        disableWebdriverStepsReporting: true,
+        }]
+    ],
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
-    mochaOpts: {
-        ui: 'bdd',
-        timeout: 60000
+    // mochaOpts: {
+    //     ui: 'bdd',
+    //     timeout: 60000
+    // },
+
+    cucumberOpts: {
+        timeout: 15000,
+        require: ['./features/step_definitions/*.js'],
+        ignoreUndefinedDefinitions: false
     },
 
     //
@@ -229,7 +258,7 @@ export const config = {
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
     afterTest: async function(test, context, { error, result, duration, passed, retries }) {
-        if (!passed) {
+        if (!passed || error) {
             await browser.takeScreenshot();
         }
     },
