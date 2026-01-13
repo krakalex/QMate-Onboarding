@@ -1,7 +1,7 @@
 Feature: Order Management
 
 Scenario: Verify the stock is updated after placing an order
-    Given I open the Demokit application
-    When I check the "initial stock" of the first product
-    And I place an order for the selected product
-    Then I should see that the stock was updated correctly
+    Given Open the Demokit application
+    When Check the stock of the product "Chai"
+    And Place an order for the selected product
+    Then Verify that the stock quantity increased by 10

@@ -1,6 +1,6 @@
 class BasePage {
 
-    async openPage(path = "") {
+    async openPage(path) {
         await common.navigation.navigateToUrl(path);
     }
 } 

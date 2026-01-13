@@ -121,7 +121,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['visual', [QmateService]],
+    services: [[QmateService]],
 
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -160,7 +160,9 @@ exports.config = {
     cucumberOpts: {
         timeout: 15000,
         require: ['./features/step_definitions/*.js'],
-        ignoreUndefinedDefinitions: false
+        ignoreUndefinedDefinitions: false,
+        // retry: 0,
+        // retryTagFilter: '@flaky'
     },
 
     //
