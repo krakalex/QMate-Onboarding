@@ -6,6 +6,22 @@ class CustomWorld {
         this.productName = '';
         this.initialProductStockQuantity = 0;
     }
+
+    setProductName(name) {
+        this.productName = name;
+    }
+
+    getProductName() {
+        return this.productName;
+    }
+
+    setInitialProductStockQuantity(quantity) {
+        this.initialProductStockQuantity = quantity;
+    }
+
+    getInitialProductStockQuantity() {
+        return this.initialProductStockQuantity;
+    }
 }
 
 setWorldConstructor(CustomWorld);
@@ -16,10 +32,10 @@ Given('Open the Demokit application', async () => {
     await browser.takeScreenshot();
 });
 
-When('Check the stock of the product {string}', async function (productName) {
-    this.productName = productName;
+When('Store the stock of the product {string}', async function (productName) {
+    this.setProductName(productName);
     await manageProductsPage.selectProductByName(productName);
-    this.initialProductStockQuantity = await manageProductsPage.getProductStock(productName);
+    this.setInitialProductStockQuantity(await manageProductsPage.getProductStock(productName));
 });
 
 When('Place an order for the selected product', async () => {
@@ -29,7 +45,7 @@ When('Place an order for the selected product', async () => {
 });
 
 Then('Verify that the stock quantity increased by {int}', async function (expectedIncrease) {
-    const updatedProductStockQuantity = await manageProductsPage.getProductStock(this.productName);
-    await manageProductsPage.verifyStockChanges(this.initialProductStockQuantity, updatedProductStockQuantity, expectedIncrease);
+    const updatedProductStockQuantity = await manageProductsPage.getProductStock(this.getProductName());
+    await common.assertion.expectEqual(updatedProductStockQuantity, this.getInitialProductStockQuantity() + expectedIncrease);
     await browser.takeScreenshot();
 });

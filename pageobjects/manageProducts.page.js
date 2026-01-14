@@ -26,20 +26,20 @@ class ManageProductsPage extends BasePage {
     };
 
     async selectProductByName(productName) {
-        const productComboBoxSelector = {
+        const productCheckBoxSelector = {
             "elementProperties": {
-            "metadata": "sap.m.CheckBox",
-            "bindingContextPath": "/Products*)"
+                "metadata": "sap.m.CheckBox",
+                "bindingContextPath": "/Products*)"
             },
             "ancestorProperties": {
-            "metadata": "sap.m.ColumnListItem",
-            "descendantProperties": {
-                "metadata": "sap.m.ObjectIdentifier",
-                "title": productName
-            }
+                "metadata": "sap.m.ColumnListItem",
+                "descendantProperties": {
+                    "metadata": "sap.m.ObjectIdentifier",
+                    "title": productName
+                }
             }
         };
-        await ui5.userInteraction.click(productComboBoxSelector);
+        await ui5.userInteraction.click(productCheckBoxSelector);
     };
 
     async getProductStock(productName) {
@@ -66,10 +66,6 @@ class ManageProductsPage extends BasePage {
     async waitForOrderConfirmation() {
         await nonUi5.element.waitToBeVisible(this.confirmationPopUpSelector, 5000);
     };
-
-    async verifyStockChanges(initialStockQuantity, updatedProductStockQuantity, expectedIncrease) {
-        await common.assertion.expectEqual(updatedProductStockQuantity, initialStockQuantity + expectedIncrease);
-    }
 }
 
 module.exports = new ManageProductsPage();
