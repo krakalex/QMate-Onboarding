@@ -2,6 +2,6 @@ Feature: Order Management
 
 Scenario: Verify the stock is updated after placing an order
     Given Open the Demokit application
-    When Store the stock of the product "Chai"
+    When Get "Chai" quantity in stock 
     And Place an order for the selected product
-    Then Verify that the stock quantity increased by 10
+    Then Verify that "Chai" stock quantity increased by 10

@@ -3,16 +3,7 @@ const manageProductsPage = require('../../pageobjects/manageProducts.page');
 
 class CustomWorld {
     constructor() {
-        this.productName = '';
         this.initialProductStockQuantity = 0;
-    }
-
-    setProductName(name) {
-        this.productName = name;
-    }
-
-    getProductName() {
-        return this.productName;
     }
 
     setInitialProductStockQuantity(quantity) {
@@ -32,8 +23,7 @@ Given('Open the Demokit application', async () => {
     await browser.takeScreenshot();
 });
 
-When('Store the stock of the product {string}', async function (productName) {
-    this.setProductName(productName);
+When('Get {string} quantity in stock', async function (productName) {
     await manageProductsPage.selectProductByName(productName);
     this.setInitialProductStockQuantity(await manageProductsPage.getProductStock(productName));
 });
@@ -44,8 +34,8 @@ When('Place an order for the selected product', async () => {
     await browser.takeScreenshot();
 });
 
-Then('Verify that the stock quantity increased by {int}', async function (expectedIncrease) {
-    const updatedProductStockQuantity = await manageProductsPage.getProductStock(this.getProductName());
+Then('Verify that {string} stock quantity increased by {int}', async function (productName, expectedIncrease) {
+    const updatedProductStockQuantity = await manageProductsPage.getProductStock(productName);
     await common.assertion.expectEqual(updatedProductStockQuantity, this.getInitialProductStockQuantity() + expectedIncrease);
     await browser.takeScreenshot();
 });
