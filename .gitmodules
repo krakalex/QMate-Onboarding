@@ -1,0 +1,3 @@
+[submodule "wdio-qmate-types"]
+	path = wdio-qmate-types
+	url = https://github.com/krakalex/QMate-Onboarding
