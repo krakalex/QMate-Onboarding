@@ -1,12 +1,10 @@
-const QmateService = require("@sap_oss/wdio-qmate-service");
-
-exports.config = {
+export const config = {
     //
     // ====================
     // Runner Configuration
     // ====================
     // WebdriverIO supports running e2e tests as well as unit and component tests.
-    runner: 'local',
+    runner: "local",
     //
     // ==================
     // Specify Test Files
@@ -23,8 +21,8 @@ exports.config = {
     // of the config file unless it's absolute.
     //
     specs: [
-       './features/**/*.feature',
-    //    './specs/createNewOrder.spec.js'
+        "./features/**/*.feature",
+        //    './specs/createNewOrder.spec.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -52,27 +50,29 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        browserName: 'chrome',
-        acceptInsecureCerts: true,
-        'goog:chromeOptions': {
-            args: [
-                "--output-/dev/null",
-                "--log-level-3",
-                "--no-sandbox",
-                "--disable-search-engine-choice-screen",
-                "--ignore-certificate-errors",
-                "--window-size-1920,1200",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--disable-web-security",
-                "--disable-infobars",
-                "--disable-extensions",
-                "--disable-logging",
-                "--lang=en-US"
-            ]
-        }
-    }],
+    capabilities: [
+        {
+            browserName: "chrome",
+            acceptInsecureCerts: true,
+            "goog:chromeOptions": {
+                args: [
+                    "--output-/dev/null",
+                    "--log-level-3",
+                    "--no-sandbox",
+                    "--disable-search-engine-choice-screen",
+                    "--ignore-certificate-errors",
+                    "--window-size-1920,1200",
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu",
+                    "--disable-web-security",
+                    "--disable-infobars",
+                    "--disable-extensions",
+                    "--disable-logging",
+                    "--lang=en-US",
+                ],
+            },
+        },
+    ],
 
     //
     // ===================
@@ -81,7 +81,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'warn',
+    logLevel: "warn",
     //
     // Set specific log levels per logger
     // loggers:
@@ -105,7 +105,8 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'https://sdk.openui5.org/test-resources/sap/m/demokit/tutorial/worklist/07/webapp/test/mockServer.html?sap-ui-theme=sap_horizon',
+    baseUrl:
+        "https://sdk.openui5.org/test-resources/sap/m/demokit/tutorial/worklist/07/webapp/test/mockServer.html?sap-ui-theme=sap_horizon",
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -121,7 +122,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: [[QmateService]],
+    services: [["@sap_oss/wdio-qmate-service"]],
 
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -129,8 +130,8 @@ exports.config = {
     //
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
-    framework: 'cucumber',
-    
+    framework: "cucumber",
+
     //
     // The number of times to retry the entire specfile when it fails as a whole
     // specFileRetries: 1,
@@ -144,10 +145,15 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec',['allure', {
-        outputDir: 'allure-results',
-        disableWebdriverStepsReporting: true,
-        }]
+    reporters: [
+        "spec",
+        [
+            "allure",
+            {
+                outputDir: "allure-results",
+                disableWebdriverStepsReporting: true,
+            },
+        ],
     ],
 
     // Options to be passed to Mocha.
@@ -159,7 +165,7 @@ exports.config = {
 
     cucumberOpts: {
         timeout: 15000,
-        require: ['./features/step_definitions/*.js'],
+        require: ["./features/step_definitions/*.ts"],
         ignoreUndefinedDefinitions: false,
         // retry: 0,
         // retryTagFilter: '@flaky'
@@ -259,12 +265,11 @@ exports.config = {
      * @param {boolean} result.passed    true if test has passed, otherwise false
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    afterTest: async function(test, context, { error, result, duration, passed, retries }) {
-        if (!passed || error) {
+    afterTest: async function (passed: unknown){
+        if (!passed ) {
             await browser.takeScreenshot();
         }
     },
-
 
     /**
      * Hook that gets executed after the suite has ended
@@ -309,22 +314,22 @@ exports.config = {
     // onComplete: function(exitCode, config, capabilities, results) {
     // },
     /**
-    * Gets executed when a refresh happens.
-    * @param {string} oldSessionId session ID of the old session
-    * @param {string} newSessionId session ID of the new session
-    */
+     * Gets executed when a refresh happens.
+     * @param {string} oldSessionId session ID of the old session
+     * @param {string} newSessionId session ID of the new session
+     */
     // onReload: function(oldSessionId, newSessionId) {
     // }
     /**
-    * Hook that gets executed before a WebdriverIO assertion happens.
-    * @param {object} params information about the assertion to be executed
-    */
+     * Hook that gets executed before a WebdriverIO assertion happens.
+     * @param {object} params information about the assertion to be executed
+     */
     // beforeAssertion: function(params) {
     // }
     /**
-    * Hook that gets executed after a WebdriverIO assertion happened.
-    * @param {object} params information about the assertion that was executed, including its results
-    */
+     * Hook that gets executed after a WebdriverIO assertion happened.
+     * @param {object} params information about the assertion that was executed, including its results
+     */
     // afterAssertion: function(params) {
     // }
-}
+};
